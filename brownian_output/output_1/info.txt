@@ -1,0 +1,4 @@
+File Name:      trajectories_2_micron_250_ml_(2)_link5_disp10.txt
+Number of frames:      501
+Number of particles:     26
+Distance units:     pixels^2
