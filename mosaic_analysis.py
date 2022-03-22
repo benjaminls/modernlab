@@ -42,7 +42,7 @@ def split_points(vdata):
         elif l != 0:
             trajlens.append(l)
             l = 0
-    FRAMECOUNT = max(trajlens)
+    # FRAMECOUNT = max(trajlens)
     # print(trajlens)
     out = []
     for i in range(len(trajlens)):
@@ -50,6 +50,12 @@ def split_points(vdata):
             out.append(trajlens[0])
         else:
             out.append(out[i-1] + trajlens[i])
+    
+    all_inds = []
+    for i in range(len(vdata)):
+        if vdata[i] != '%':
+            all_inds.append(int(vdata[i]))
+    FRAMECOUNT = max(all_inds) + 1
 
     return out
 
@@ -75,10 +81,30 @@ def filter_complete(dataset):
     for i in range(len(dataset)):
         if len(dataset[i]) == FRAMECOUNT:
             out.append(dataset[i])
-    PARTICLECOUNT = len(out)        # number of particles per frame after
-                                    #   filtering for complete trajectories
+    # number of particles per frame after filtering for complete trajectories
+    PARTICLECOUNT = [len(out) for item in range(FRAMECOUNT)] 
+
     return out
 
+
+def filter_initial(dataset):
+    global PARTICLECOUNT
+
+    out = []
+    for i in range(len(dataset)):
+        if dataset[i][0][0] == 0:
+            out.append(dataset[i])
+    lengths = [len(item) for item in out]
+    PARTICLECOUNT = []
+    zerothcolumn = []
+    for i in range(len(out)):
+        for j in range(len(out[i])):
+            zerothcolumn.append(int(out[i][j][0]))
+    
+    for i in range(FRAMECOUNT):
+        PARTICLECOUNT.append(zerothcolumn.count(i))
+    
+    return out
 
 def square_displacement(dataset):
     disp2list = [[] for item in range(FRAMECOUNT)]
@@ -92,7 +118,9 @@ def square_displacement(dataset):
             (x0, y0) = traj[0][1:]
             (xi, yi) = traj[i][1:]
             disp2 = (x0 - xi)**2 + (y0 - yi)**2
+            # print()
             # print(ind)
+            # print(len(disp2list))
             disp2list[ind] += [disp2]
     
     return disp2list
@@ -102,8 +130,8 @@ def get_msd(disp2list):
     msd_list = []
     msd_stdev_list = []
     for i in range(FRAMECOUNT):
-        disp2avg = np.sum(disp2list[i]) / PARTICLECOUNT
-        stdev = np.std(disp2list[i]) / PARTICLECOUNT
+        disp2avg = np.sum(disp2list[i]) / PARTICLECOUNT[i]
+        stdev = np.std(disp2list[i]) / PARTICLECOUNT[i]
         msd_list.append(disp2avg)
         msd_stdev_list.append(stdev)
     return (msd_list, msd_stdev_list)
@@ -127,7 +155,7 @@ def get_msd(disp2list):
 #         ind_upper = ind0s[i+1] - 1
         
 
-# filename = 'trajectories_2_micron_250_ml_(2)_link5_disp10.txt'
+filename = 'trajectories_3.8_1_micron_3_link5_disp10.txt'
 
 # Columns:
 # frame | x (pixel) | y (pixel) | z (pixel) | m0 | m1 | m2 | m3 | m4 | s 
@@ -135,7 +163,8 @@ data = np.loadtxt(filename, comments='%', usecols=(0,1,2))
 vdata = np.loadtxt(filename, comments=(' ', '% '), dtype=str)
 
 data = split_list(data, vdata)
-data = filter_complete(data)
+# data = filter_complete(data)
+data = filter_initial(data)
 
 disp2list = square_displacement(data)
 (msd_list, msd_stdev_list) = get_msd(disp2list)
