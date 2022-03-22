@@ -155,8 +155,6 @@ def get_msd(disp2list):
 #         ind_upper = ind0s[i+1] - 1
         
 
-filename = 'trajectories_3.8_1_micron_3_link5_disp10.txt'
-
 # Columns:
 # frame | x (pixel) | y (pixel) | z (pixel) | m0 | m1 | m2 | m3 | m4 | s 
 data = np.loadtxt(filename, comments='%', usecols=(0,1,2))
