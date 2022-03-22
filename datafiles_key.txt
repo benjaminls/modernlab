@@ -1,0 +1,35 @@
+This document describes the procedure and parameters for processing the raw 
+microscope data in ImageJ using the Mosaic plugin. 
+
+1) The raw .tiff image stack is imported into ImageJ
+    File > Open > {select the datafile}
+
+2) Adjust the grayscale threshhold. Since the images are 8-bit grayscale, we 
+can set a grayscale value to make all lower values go to minimum and all 
+higher values go to maximum. This step effectively subtracts the background 
+of from the spheres we want to track. 
+    Image > Adjust > Threshold
+A window appears with controls to manipulate the threshold values. The 
+threshold can be manually adjusted, but we chose to use one of the "smart" 
+settings. This setting picks a threshold value that maximizes one of the 
+several possible performance metrics. Among those listed were: "Mean," 
+"MaxEntropy," "MinError," "Minimum," "Intermodes," and many others. Using 
+of the preset threshold metrics also prevented unintential biased sampling 
+from affecting the background selection if we chose the value ourselves. We 
+chose the "MaxEntropy" setting after examining the background subtraction 
+performance of each setting. MaxEntropy appeared to chose the threshold value 
+value that best included the actual plastic spheres while introducing minimal
+unwanted noise. This selection was made, and with all three of the boxes 
+unselected, the "Apply" button is pressed. 
+
+3) Select the Mosaic plugin
+    Plugins > Mosaic > Particle Tracker 2D/3D
+
+    Use the parameters:
+    radius = 10 (pixels, for 2 micron spheres), 6 (for 1 micron spheres)
+    cutoff = 3.0
+    per/abs = 0.5 (for 2 micron spheres), 0.1 (for 1 micron spheres)
+    link = 5
+    displacement = 10
+
+    Press "Ok" to start the analysis. This will take some time. 
