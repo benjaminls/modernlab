@@ -150,9 +150,9 @@ disp2list = square_displacement(data)
 #     )
 
 info = np.array([
-    ['File Name: ', filename],
-    ['Number of frames: ', FRAMECOUNT],
-    ['Number of particles: ', PARTICLECOUNT],
+    ['File Name: ', filename], 
+    ['Number of frames: ', FRAMECOUNT], 
+    ['Number of particles: ', PARTICLECOUNT], 
     ['Distance units: ', 'pixels^2'], 
 ])
 
@@ -181,17 +181,17 @@ info = np.array([
 # store all output files in an output directory
 outputdir = 'brownian_output'       # name of output directory
 CWD = os.getcwd()                   # current working directory
-print('Current Working Directory: ', CWD)
+print('Current Working Directory: ', CWD, '\n')
 
 msd_list = np.asarray(msd_list)
 msd_stdev_list = np.asarray(msd_stdev_list)
 
 if outputdir in os.listdir():
-    print('Found existing ', outputdir, ' in current working directory. ')
-    print('All files will be saved in ', outputdir, '.')
+    print('Found existing ', outputdir, ' in current working directory.\n')
+    print('All files will be saved in ', outputdir + '.\n')
 else:
-    print('Preexisting output directory not found.')
-    print('Creating one now...')
+    print('Preexisting output directory not found.\n')
+    print('Creating one now...\n')
     os.mkdir(outputdir)
 
 # create dir in outputdir
@@ -201,11 +201,16 @@ dirname = 'output_' + str(n)
 while dirname in os.listdir():
     n += 1
     dirname = 'output_' + str(n)
-print('Created new directory ', dirname, ' in ', outputdir)
+print('Created new directory ', dirname, ' in ', outputdir, '\n')
+os.mkdir(dirname)
 
 # move into new output_n directory inside outputdir
 os.chdir(os.path.join(CWD, outputdir, dirname))
-print('Writing data...')
+print('Writing data...\n')
 np.savetxt("msd.csv", msd_list, delimiter=",")
 np.savetxt("msd_stdev.csv", msd_stdev_list, delimiter=",")
-np.savetxt("info.txt", info, delimiter=", ")
+np.savetxt("info.txt", info, delimiter="        ", fmt='%s')
+
+print('---------------------------------')
+print('|            D O N E            |')
+print('---------------------------------\n')
