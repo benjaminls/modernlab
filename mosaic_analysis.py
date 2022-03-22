@@ -140,14 +140,14 @@ data = filter_complete(data)
 disp2list = square_displacement(data)
 (msd_list, msd_stdev_list) = get_msd(disp2list)
 
-plt.errorbar(
-    list(range(501)), 
-    msd_list, 
-    yerr=msd_stdev_list, 
-    elinewidth=0.3, 
-    capsize=0.1, 
-    capthick=0.1,
-    )
+# plt.errorbar(
+#     list(range(501)), 
+#     msd_list, 
+#     yerr=msd_stdev_list, 
+#     elinewidth=0.3, 
+#     capsize=0.1, 
+#     capthick=0.1,
+#     )
 
 info = np.array([
     ['File Name: ', filename],
