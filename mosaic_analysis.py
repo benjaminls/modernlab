@@ -18,7 +18,8 @@ import numpy as np
 
 # datafile must be in same directory as the script when run
 filename = sys.argv[1]
-if filename not in os.listdir():
+PATH = os.getcwd() 
+if filename not in os.listdir(PATH):
     print('ERROR: Cannot find \"', filename, '\" in the current working directory.\n')
     print(
         'Make sure the datafile you are trying to analyze is in the same place as this script when you run it.\n'
@@ -213,7 +214,8 @@ print('Current Working Directory: ', CWD, '\n')
 msd_list = np.asarray(msd_list)
 msd_stdev_list = np.asarray(msd_stdev_list)
 
-if outputdir in os.listdir():
+PATH = os.getcwd() 
+if outputdir in os.listdir(PATH):
     print('Found existing ', outputdir, ' in current working directory.\n')
     print('All files will be saved in ', outputdir + '.\n')
 else:
@@ -225,7 +227,8 @@ else:
 os.chdir(os.path.join(CWD, outputdir))
 n = 0
 dirname = 'output_' + str(n)
-while dirname in os.listdir():
+PATH = os.getcwd() 
+while dirname in os.listdir(PATH):
     n += 1
     dirname = 'output_' + str(n)
 print('Created new directory ', dirname, ' in ', outputdir, '\n')
